@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: podcastrs-mongo-pod
+spec:
+  containers:
+    - name: podcastrs-mongo-pod
+      image: mongo
+      volumeMounts:
+      - mountPath: "/data"
+        name: mongo-do-volume
+  initContainers:
+  - name: mongo-data-permission-fix
+    image: busybox
+    command: ["/bin/chmod", "-R", "777", "/data"]
+    volumeMounts:
+    - name: mongo-do-volume
+      mountPath: /data
+  volumes:
+    - name: mongo-do-volume
+      persistentVolumeClaim:
+        claimName: podcastrs-mongo-pvc
