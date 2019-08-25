@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: podcastrs
+spec:
+  selector:
+    matchLabels:
+      app: podcastrs
+      tier: api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: podcastrs
+        tier: api
+    spec:
+      containers:
+      - name: podcastrs-podrocket
+        image: denyspolitiuk/podrocket
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 8000
