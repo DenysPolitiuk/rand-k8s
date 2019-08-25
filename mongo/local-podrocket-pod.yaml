@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
       - name: podcastrs-podrocket
-        image: denyspolitiuk/podrocket
+        image: podrocket-test
+        imagePullPolicy: Never
         resources:
           requests:
             cpu: 100m

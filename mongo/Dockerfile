@@ -1,11 +1,13 @@
 from ubuntu
 
-RUN apt-get update && apt-get install -y wget \
-	&& apt-get install -y libssl1.0.0:amd64 \
+RUN apt-get update \
+	&& apt-get install -y libssl1.0.0:amd64 openssl \
 	&& apt-get -y autoremove && apt-get -y clean
 
+COPY ./podrocket /podrocket
+
 RUN mkdir -p /home/podcastrs && cd /home/podcastrs \
-	&& wget https://podcastrs-deploy.s3.ca-central-1.amazonaws.com/podrocket \
+	&& mv /podrocket . \
 	&& chmod +x podrocket
 
 RUN groupadd -r podcastrs && useradd -r -g podcastrs podcastrs \
@@ -15,4 +17,4 @@ USER podcastrs
 
 EXPOSE 8000
 
-CMD ["/home/podcastrs/podrocket"] 
+CMD ["/home/podcastrs/podrocket"]
