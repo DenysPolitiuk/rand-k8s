@@ -1,23 +1,36 @@
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: podcastrs-mongo-pod
+  labels:
+    app: podcastrs
 spec:
-  containers:
-    - name: podcastrs-mongo-pod
-      image: mongo
-      volumeMounts:
-      - mountPath: "/data"
-        name: mongo-do-volume
-  initContainers:
-  - name: mongo-data-permission-fix
-    image: busybox
-    command: ["/bin/chmod", "-R", "777", "/data"]
-    volumeMounts:
-    - name: mongo-do-volume
-      mountPath: /data
-  volumes:
-    - name: mongo-do-volume
-      persistentVolumeClaim:
-        claimName: podcastrs-mongo-pvc
+  selector:
+    matchLabels:
+      app: podcastrs
+      tier: db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: podcastrs
+        tier: db
+    spec:
+      containers:
+        - name: podcastrs-mongo-pod
+          image: mongo
+          volumeMounts:
+          - mountPath: "/data"
+            name: mongo-do-volume
+      initContainers:
+      - name: mongo-data-permission-fix
+        image: busybox
+        command: ["/bin/chmod", "-R", "777", "/data"]
+        volumeMounts:
+        - name: mongo-do-volume
+          mountPath: /data
+      volumes:
+        - name: mongo-do-volume
+          persistentVolumeClaim:
+            claimName: podcastrs-mongo-pvc

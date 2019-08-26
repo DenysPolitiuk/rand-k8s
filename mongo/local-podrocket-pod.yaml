@@ -27,6 +27,8 @@ spec:
             memory: 100Mi
         env:
         - name: RSS_DATABASE_HOST
-          value: "podcastrs-mongo-pod"
+          value: "db"
+        - name: RSS_DATABASE_PORT
+          value: "27017"
         ports:
         - containerPort: 8000
