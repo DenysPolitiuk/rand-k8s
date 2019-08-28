@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: podcast-istio
+  labels:
+    app: podcast-istio
+spec:
+  selector:
+    app: podcast-istio
+  ports:
+  - name: http
+    port: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podcast-istio
+  labels:
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: podcast-istio
+  template:
+    metadata:
+      labels:
+        app: podcast-istio
+        version: v1
+    spec:
+      containers:
+      - name: podcast-istio
+        image: denyspolitiuk/podrocket-slim
+        ports:
+        - containerPort: 8000
