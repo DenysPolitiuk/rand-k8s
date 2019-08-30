@@ -26,3 +26,11 @@ spec:
   - route:
     - destination:
         host: podcast-istio
+    corsPolicy:
+      allowOrigin:
+        - "*"
+      allowMethods:
+        - GET
+      allowCredentials: true 
+      allowHeaders:
+        - "*"
