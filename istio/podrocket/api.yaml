@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: podrocket
+  labels:
+    app: podcastrs
+spec:
+  selector:
+    app: podcastrs
+  ports:
+  - name: http
+    port: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podrocket
+  labels:
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: podcastrs
+  template:
+    metadata:
+      labels:
+        app: podcastrs
+        version: v1
+    spec:
+      containers:
+      - name: podrocket
+        image: denyspolitiuk/podrocket-slim
+        ports:
+        - containerPort: 8000
+        env:
+        - name: RSS_DATABASE_HOST
+          value: "db"
+        - name: RSS_DATABASE_PORT
+          value: "27017"
